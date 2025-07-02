@@ -1,0 +1,43 @@
+- name: app setup
+  include_role:
+    name: common
+    tasks_from: app-setup
+
+- name: nodejs setup
+  include_role:
+    name: common
+    tasks_from: nodejs-setup
+
+- name: systemd setup
+  include_role:
+    name: common
+    tasks_from: systemd-setup
+
+- name: copy mongodb repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: install mongodb client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
+
+- name: check products or loaded or not
+  ansible.builtin.command: mongosh --host {{ MONGODB_HOST }} --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: db_output    # To extract the output from the abobe command. Similar like $() in shell
+
+- name: Print the output
+  ansible.builtin.debug:
+    msg: "{{ db_output }}"
+
+- name: Load the products to db
+  ansible.builtin.shell: mongosh --host {{ MONGODB_HOST }} < /app/db/master-data.js
+  when: db_output.stdout | int < 0  
+
+# - name: Deployment of {{ component }}
+#   tags:
+#   - deployment
+#   import_role:                    #Import_role will stop the exceution if any errors/syntax issue during runtime execution
+#     name: common
+#     tasks_from: deployment

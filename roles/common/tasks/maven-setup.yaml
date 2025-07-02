@@ -1,0 +1,28 @@
+- name: Install Maven
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: installed
+  loop:
+  - maven
+  - mysql
+
+# Install python packages to load schema db which are some dependent packages
+- name: Install PyMySQL and Cyrptography
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    executable: pip3.9
+  loop:
+  - cryptography
+  - PyMySQL
+
+# As we don't have any official ansible module for mvn dependencies we go for shell command module. 
+# args is used to download the dependencies in a special path
+- name: Install maven Dependencies
+  ansible.builtin.command: mvn clean package
+  args:
+    chdir: /app 
+
+- name: Rename jar file
+  ansible.builtin.command: "mv target/{{ component }}-1.0.jar {{ component }}.jar"
+  args:
+    chdir: /app

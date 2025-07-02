@@ -1,0 +1,32 @@
+- name: stop {{ component }} service
+  tags:
+  - deployment
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: stopped
+
+- name: remove app directory
+  ansible.builtin.file:
+    state: absent
+    path: /app
+
+- name: Create new app directory 
+  ansible.builtin.file:
+    state: directory
+    path: /app
+
+# We can download and extract using unarchive module
+- name: Download and unarchive application
+  ansible.builtin.unarchive:
+    src: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v{{ app_version }}.zip"
+    dest: /app
+    remote_src: yes
+
+- name: Install dependencies
+  community.general.npm:
+    path: /app
+
+- name: restart the {{ component }}
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: restarted
