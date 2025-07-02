@@ -25,7 +25,7 @@
 
 - name: check products or loaded or not
   ansible.builtin.command: mongosh --host {{ MONGODB_HOST }} --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
-  register: db_output    # To extract the output from the abobe command. Similar like $() in shell
+  register: db_output
 
 - name: Print the output
   ansible.builtin.debug:
