@@ -1,4 +1,4 @@
 MYSQL_ROOT_USER: root
 MYSQL_ROOT_PASSWORD: RoboShop@1
-MYSQL_HOST: mysql.roboshop.space
-CART_HOST: cart.roboshop.space
+MYSQL_HOST: mysql-{{ env }}.roboshop.space
+CART_HOST: cart.backend-{{ env }}.roboshop.space
