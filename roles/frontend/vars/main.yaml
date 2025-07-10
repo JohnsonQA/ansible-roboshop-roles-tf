@@ -1,5 +1,5 @@
-CATALOGUE_HOST: catalogue.roboshop.space
-USER_HOST: user.roboshop.space
-CART_HOST: cart.roboshop.space
-SHIPPING_HOST: shipping.roboshop.space
-PAYMENT_HOST: payment.roboshop.space
+CATALOGUE_HOST: catalogue.backend-{{ env }}.roboshop.space
+USER_HOST: user.backend-{{ env }}.roboshop.space
+CART_HOST: cart.backend-{{ env }}.roboshop.space
+SHIPPING_HOST: shipping.backend-{{ env }}.roboshop.space
+PAYMENT_HOST: payment.backend-{{ env }}.roboshop.space
