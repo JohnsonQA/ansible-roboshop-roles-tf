@@ -10,5 +10,5 @@
     state: present
 
 - name: Install npm dependencies
-  community.general.npm:            #It's a community module which helps in installing npm dependencies
+  community.general.npm:
     path: /app
